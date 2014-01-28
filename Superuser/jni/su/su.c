@@ -747,10 +747,10 @@ int su_main(int argc, char *argv[], int need_client) {
             ctx.to.shell = optarg;
             break;
         case 'V':
-            printf("%d\n", VERSION_CODE);
+        	 printf("%s\n", VERSION);
             exit(EXIT_SUCCESS);
         case 'v':
-            printf("%s\n", VERSION);
+        	printf("%d\n", VERSION_CODE);
             exit(EXIT_SUCCESS);
         case 'u':
             switch (get_multiuser_mode()) {

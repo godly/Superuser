@@ -6,7 +6,7 @@ import android.util.Log;
 public class SuHelper {
     public static String CURRENT_VERSION = "15";
     public static void checkSu(Context context) throws Exception {
-        Process p = Runtime.getRuntime().exec("su -v");
+        Process p = Runtime.getRuntime().exec("su -V");
         String result = Settings.readToEnd(p.getInputStream());
         Log.i("Superuser", "Result: " + result);
         if (0 != p.waitFor())
