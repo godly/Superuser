@@ -422,11 +422,11 @@ static int socket_receive_result(int fd, char *result, ssize_t result_len) {
     return 0;
 }
 
-static void usage(int status) {
+static void usage(char *argv[], int status) {
     FILE *stream = (status == EXIT_SUCCESS) ? stdout : stderr;
 
     fprintf(stream,
-    "Usage: su [options] [--] [-] [LOGIN] [--] [args...]\n\n"
+    "Usage: %s [options] [--] [-] [LOGIN] [--] [args...]\n\n"
     "Options:\n"
     "  --daemon                      start the su daemon agent\n"
     "  -c, --command COMMAND         pass COMMAND to the invoked shell\n"
@@ -438,7 +438,7 @@ static void usage(int status) {
     "  -u                            display the multiuser mode and exit\n"
     "  -v, --version                 display version number and exit\n"
     "  -V                            display version code and exit,\n"
-    "                                this is used almost exclusively by Superuser.apk\n");
+    "                                this is used almost exclusively by Superuser.apk\n", argv[0]);
     exit(status);
 }
 
@@ -630,6 +630,10 @@ static void fork_for_samsung(void)
 }
 
 int main(int argc, char *argv[]) {
+    if ( argv[0] == NULL ) {
+        // exec("su", NULL, NULL)
+        exit(EXIT_FAILURE);
+    }
     return su_main(argc, argv, 1);
 }
 
@@ -685,7 +689,7 @@ int su_main(int argc, char *argv[], int need_client) {
      */
     setenv("LD_LIBRARY_PATH", "/vendor/lib:/system/lib", 0);
 
-    LOGD("su invoked.");
+    LOGD("%s invoked.", argv[0]);
 
     struct su_context ctx = {
         .from = {
@@ -734,7 +738,7 @@ int su_main(int argc, char *argv[], int need_client) {
             ctx.to.command = optarg;
             break;
         case 'h':
-            usage(EXIT_SUCCESS);
+            usage(argv, EXIT_SUCCESS);
             break;
         case 'l':
             ctx.to.login = 1;
@@ -771,7 +775,7 @@ int su_main(int argc, char *argv[], int need_client) {
         default:
             /* Bionic getopt_long doesn't terminate its error output by newline */
             fprintf(stderr, "\n");
-            usage(2);
+            usage(argv, EXIT_FAILURE_GETOPT);
         }
     }
 

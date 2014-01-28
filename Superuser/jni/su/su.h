@@ -23,6 +23,8 @@
 #endif
 #define LOG_TAG "su"
 
+#define EXIT_FAILURE_GETOPT 2
+
 #ifndef AID_SHELL
 #define AID_SHELL (get_shell_uid())
 #endif
