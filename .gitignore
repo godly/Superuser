@@ -1,9 +1,11 @@
+local.properties
 bin
+obj
+gen
+libs
 armeabi
 x86
-obj
-local.properties
-gen
+# MAC
 .DS_Store
+# Eclipse
 .settings
-libs
